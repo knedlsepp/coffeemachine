@@ -1,19 +1,29 @@
-{
-  nixpkgs ? (builtins.fetchGit {
-    url = https://github.com/NixOS/nixpkgs-channels.git;
+{ nixpkgs ? (builtins.fetchGit {
+    url = git://github.com/NixOS/nixpkgs-channels;
     ref = "nixos-18.03";
+    rev = "08d245eb31a3de0ad73719372190ce84c1bf3aee";
   })
-, getPythonVersion ? p: p.python3Packages
-, source ? fetchGit ./.
+, getPythonVersion ? (p: p.python3Packages)
+, src ? builtins.fetchGit ./.
 }:
-
 let
-  pkgs = import nixpkgs { };
+  overlays = [ ];
+  pkgs = import nixpkgs { inherit overlays; config = { }; };
   pyPkgs = getPythonVersion pkgs;
-in pyPkgs.buildPythonPackage rec {
-  name = "coffee-machine";
-  src = if ! pkgs.lib.inNixShell then null else source;
+in with pkgs; pyPkgs.buildPythonPackage rec {
+  name = "hydra-ci-example-python";
+  inherit src;
   propagatedBuildInputs = with pyPkgs; [
     django
+  ];
+
+  checkInputs = with pyPkgs; [
+    pytest
+    pytestrunner
+    pytest-flake8
+  ];
+
+  meta.maintainers = [
+    "Josef Kemetmueller <josef.kemetmueller@gmail.com>"
   ];
 }

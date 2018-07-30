@@ -7,8 +7,8 @@ from smartcard.util import toHexString
 from smartcard.ATR import ATR
 
 cmdMap = {
-    "mute":[0xFF, 0x00, 0x52, 0x00, 0x00],
-    "unmute":[0xFF, 0x00, 0x52, 0xFF, 0x00],
+    "muteCardDetection":[0xFF, 0x00, 0x52, 0x00, 0x00],
+    "unmuteCardDetection":[0xFF, 0x00, 0x52, 0xFF, 0x00],
     "getuid":[0xFF, 0xCA, 0x00, 0x00, 0x00],
     "firmver":[0xFF, 0x00, 0x48, 0x00, 0x00],
     "blinkOrange": [0xFF, 0x00, 0x40, 0xCF, 0x04, 0x03, 0x00, 0x01, 0x00 ],
@@ -34,7 +34,21 @@ class DjangoInsertionObserver(CardObserver):
         for card in removedcards:
             pass
 
+def init():
+    initialized = False
+    while not initialized:
+        try:
+            card_request = CardRequest(timeout=None)
+            card_service = card_request.waitforcard()
+            card_service.connection.connect()
+            card_service.connection.transmit(cmdMap["muteCardDetection"])
+            card_service.connection.transmit(cmdMap["waitUntilRespond"])
+            initialized = True
+        except:
+             pass
+
 if __name__ == '__main__':
+    init()
     cardmonitor = CardMonitor()
     cardobserver = DjangoInsertionObserver()
     cardmonitor.addObserver(cardobserver)

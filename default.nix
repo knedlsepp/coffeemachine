@@ -39,7 +39,9 @@ let
         doInstallCheck = false;
       }))
       (libusb1.overrideAttrs(o: {
-        doInstallCheck = false;
+        postPatch = ''
+          substituteInPlace usb1/libusb1.py --replace "/opt/local/lib/libusb-1.0.dylib" "${pkgs.lib.getLib pkgs.libusb1}/lib/libusb-1.0.dylib"
+        '';
       }))
       pyDes
       ndeflib

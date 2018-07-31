@@ -52,10 +52,13 @@ def init():
         except:
              pass
 
-if __name__ == '__main__':
+def main():
     init()
     cardmonitor = CardMonitor()
     cardobserver = DjangoInsertionObserver()
     cardmonitor.addObserver(cardobserver)
     while True:
         sleep(1)
+
+if __name__ == '__main__':
+    main()

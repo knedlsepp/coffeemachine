@@ -29,7 +29,7 @@ class DjangoInsertionObserver(CardObserver):
                 res, s1, s2 = card.connection.transmit(cmdMap["getuid"])
                 print(toHexString(res))
                 if res:
-                    res, s1, s2  = card.connection.transmit(cmdMap["blinkOrange"]) # Confirm
+                    res, s1, s2  = card.connection.transmit(cmdMap["blinkGreenWithSound"])
                 else:
                     print("Failure reading the thing")
             except CardRequestTimeoutException as e: # TODO: Still does not catch all exceptions. Try moving cards away quickly and those errors still occur (and cause an infinite loop in our program)

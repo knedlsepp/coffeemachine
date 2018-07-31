@@ -32,7 +32,9 @@ class DjangoInsertionObserver(CardObserver):
                     res, s1, s2  = card.connection.transmit(cmdMap["blinkGreenWithSound"])
                 else:
                     print("Failure reading the thing")
-            except CardRequestTimeoutException as e: # TODO: Still does not catch all exceptions. Try moving cards away quickly and those errors still occur (and cause an infinite loop in our program)
+            except CardRequestTimeoutException as e:
+                # TODO: Still does not catch all exceptions. Try moving cards away quickly and those errors still occur (and cause an infinite loop in our program)
+                # We should probably not use the observer based approach.
                 print("Error reading the thing")
                 continue
         for card in removedcards:

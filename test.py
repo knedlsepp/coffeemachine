@@ -6,6 +6,9 @@ from smartcard.CardMonitoring import CardMonitor, CardObserver, CardRequest
 from smartcard.util import toHexString
 from smartcard.ATR import ATR
 
+from coffeelist.models import Tag, Purchase
+from django.utils.timezone import now
+
 cmdMap = {
     "muteCardDetection":[0xFF, 0x00, 0x52, 0x00, 0x00],
     "unmuteCardDetection":[0xFF, 0x00, 0x52, 0xFF, 0x00],
@@ -29,7 +32,10 @@ class DjangoInsertionObserver(CardObserver):
                 res, s1, s2 = card.connection.transmit(cmdMap["getuid"])
                 print(toHexString(res))
                 if res:
-                    res, s1, s2  = card.connection.transmit(cmdMap["blinkGreenWithSound"])
+                    card.connection.transmit(cmdMap["blinkGreenWithSound"])
+                    tag, created = Tag.objects.get_or_create(tag_value=toHexString(res))
+                    purchase = Purchase(tag=tag, date=now())
+                    purchase.save()
                 else:
                     print("Failure reading the thing")
             except CardRequestTimeoutException as e:

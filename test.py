@@ -46,7 +46,6 @@ def init():
             card_service = card_request.waitforcard()
             card_service.connection.connect()
             card_service.connection.transmit(cmdMap["muteCardDetection"])
-            card_service.connection.transmit(cmdMap["waitUntilRespond"])
             initialized = True
         except:
              pass

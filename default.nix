@@ -9,6 +9,11 @@
 let
   overlays = [ ];
   pkgs = import nixpkgs { inherit overlays; config = { }; };
+  pyscard = pyPkgs.pyscard.overrideAttrs(o: rec {
+    preBuild = ''
+      substituteInPlace smartcard/CardMonitoring.py --replace "traceback.print_exc()" "print('Not bailing on you!'); continue"
+    '';
+  });
   pyPkgs = getPythonVersion pkgs;
 in with pkgs; pyPkgs.buildPythonPackage rec {
   name = "coffeemachine";

@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import django
+django.setup()
+
 from time import sleep
 
 from smartcard.CardType import AnyCardType

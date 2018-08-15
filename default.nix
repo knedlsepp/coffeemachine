@@ -15,7 +15,7 @@ in with pkgs; pyPkgs.buildPythonPackage rec {
   inherit src;
   propagatedBuildInputs = with pyPkgs; [
     django
-	pandas
+    pandas
     pyscard
   ];
 

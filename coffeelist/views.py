@@ -26,6 +26,7 @@ def index(request):
         total_purchases=Sum('tag__purchase__price__euros'))]
 
     df = pd.DataFrame(response)
+    df.set_index('pk', inplace=True)
     print(df)
     response = df[[
         'full_name', 'balance',

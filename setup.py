@@ -6,4 +6,5 @@ setup(
     version='1.0',
     scripts=glob('scripts/*'),
     packages=find_packages(),
-    setup_requires=['django', 'pyscard', 'pandas'])
+    setup_requires=['django', 'pyscard', 'pandas'],
+    tests_require=['pytest', 'pytest-django'])

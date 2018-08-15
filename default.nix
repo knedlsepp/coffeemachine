@@ -18,9 +18,10 @@ in with pkgs; pyPkgs.buildPythonPackage rec {
     pandas
     pyscard
   ];
-
+  doCheck = false; # TODO!
   checkInputs = with pyPkgs; [
     pytest
+    pytest-django
     pytestrunner
     pytest-flake8
   ];

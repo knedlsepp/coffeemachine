@@ -11,7 +11,7 @@ let
   pkgs = import nixpkgs { inherit overlays; config = { }; };
   pyPkgs = getPythonVersion pkgs;
 in with pkgs; pyPkgs.buildPythonPackage rec {
-  name = "hydra-ci-example-python";
+  name = "coffeemachine";
   inherit src;
   propagatedBuildInputs = with pyPkgs; [
     django

@@ -10,8 +10,7 @@ from django.http import JsonResponse
 import pandas as pd
 
 
-def index(request):
-
+def get_user_totals():
     user_deposit = {
         user.pk: user.deposits
         for user in User.objects.annotate(
@@ -30,6 +29,11 @@ def index(request):
 
     df = pd.DataFrame(response)
     df.set_index('pk', inplace=True)
+    return df
+
+
+def index(request):
+    df = get_user_totals()
     print(df)
     response = df[[
         'full_name',

@@ -23,7 +23,7 @@ class Purchase(models.Model):
     tag = models.ForeignKey(Tag, null=False)
     date = models.DateTimeField(
         'date of purchase', default=now)  # Probably incorrect without a RTC
-    price = models.ForeignKey(Price, null=False)
+    price = models.ForeignKey(Price, null=True)
 
     def __str__(self):
         return '(Date: {:%x %X}, Tag:{}, Price: {})'.format(

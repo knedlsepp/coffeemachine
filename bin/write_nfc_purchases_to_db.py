@@ -6,7 +6,7 @@ from smartcard.CardMonitoring import CardMonitor, CardObserver, CardRequest
 from smartcard.util import toHexString
 from smartcard.ATR import ATR
 
-from coffeelist.models import Tag, Purchase
+from coffeelist.models import Tag, Purchase, Price
 from django.utils.timezone import now
 
 cmdMap = {
@@ -34,7 +34,7 @@ class DjangoInsertionObserver(CardObserver):
                 if res:
                     card.connection.transmit(cmdMap["blinkGreenWithSound"])
                     tag, created = Tag.objects.get_or_create(tag_value=toHexString(res))
-                    purchase = Purchase(tag=tag, date=now())
+                    purchase = Purchase(tag=tag, date=now(), price=Price.objects.latest('id'))
                     purchase.save()
                 else:
                     print("Failure reading the thing")

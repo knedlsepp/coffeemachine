@@ -6,7 +6,8 @@ from smartcard.CardMonitoring import CardMonitor, CardObserver, CardRequest
 from smartcard.util import toHexString
 from smartcard.ATR import ATR
 
-from coffeelist.models import Tag, Purchase, Price
+from coffeelist.models import Tag, Purchase, Price, User
+from coffeelist.views import get_user_totals
 from django.utils.timezone import now
 
 cmdMap = {
@@ -36,6 +37,8 @@ class DjangoInsertionObserver(CardObserver):
                     tag, created = Tag.objects.get_or_create(tag_value=toHexString(res))
                     purchase = Purchase(tag=tag, date=now(), price=Price.objects.latest('id'))
                     purchase.save()
+                    # Print out balance, TODO: to screen
+                    print("{}: {}".format(tag.owner, get_user_totals().loc[tag.owner.id]["balance"]))
                 else:
                     print("Failure reading the thing")
             except CardRequestTimeoutException as e:

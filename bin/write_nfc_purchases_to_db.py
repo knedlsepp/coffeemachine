@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 import django
+from django.conf import settings
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "coffeemachine.settings")
 django.setup()
 
 from time import sleep

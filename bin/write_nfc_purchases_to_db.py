@@ -44,7 +44,10 @@ class DjangoInsertionObserver(CardObserver):
                     purchase = Purchase(tag=tag, date=now(), price=Price.objects.latest('id'))
                     purchase.save()
                     # Print out balance, TODO: to screen
-                    print("{}: {}".format(tag.owner, get_user_totals().loc[tag.owner.id]["balance"]))
+                    if tag.owner:
+                        print("{}: {}".format(tag.owner, get_user_totals().loc[tag.owner.id]["balance"]))
+                    else:
+                        print("Please associate tag with user in web interface. Unknown balance.")
                 else:
                     print("Failure reading the thing")
             except CardRequestTimeoutException as e:

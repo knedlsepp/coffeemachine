@@ -37,7 +37,7 @@ class DjangoInsertionObserver(CardObserver):
                 card.connection = card.createConnection()
                 card.connection.connect()
                 res, s1, s2 = card.connection.transmit(cmdMap["getuid"])
-                print(toHexString(res))
+                print("Tag registered: {}".format(toHexString(res)))
                 if res:
                     card.connection.transmit(cmdMap["blinkGreenWithSound"])
                     tag, created = Tag.objects.get_or_create(tag_value=toHexString(res))
@@ -71,6 +71,7 @@ def init():
              pass
 
 def main():
+    print("{} Starting NFC Monitor. Waiting for input.".format(now()))
     init()
     cardmonitor = CardMonitor()
     cardobserver = DjangoInsertionObserver()

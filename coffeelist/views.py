@@ -12,14 +12,23 @@ import pandas as pd
 def index(request):
 
     user_deposit = {
-        user.id: user.deposits
+        user.pk: user.deposits
         for user in User.objects.annotate(deposits=Sum('deposit__euros'))
     }
     response = [{
+        'pk': user.pk,
         'username': user.username,
         'first_name': user.first_name,
         'last_name': user.last_name,
-        'balance': user_deposit[user.id] - user.expenses
+        'total_deposits': user_deposit[user.pk],
+        'total_purchases': user.total_purchases,
+        'balance': user_deposit[user.pk] - user.total_purchases,
     } for user in User.objects.annotate(
-        expenses=Sum('tag__purchase__price__euros'))]
-    return JsonResponse(response, safe=False)
+        total_purchases=Sum('tag__purchase__price__euros'))]
+
+    df = pd.DataFrame(response)
+    response = df[[
+        'first_name', 'last_name', 'balance',
+        'total_deposits', 'total_purchases'
+    ]].to_html()
+    return HttpResponse(response)

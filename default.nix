@@ -11,7 +11,8 @@ let
   pkgs = import nixpkgs { inherit overlays; config = { }; };
   pyscard = pyPkgs.pyscard.overrideAttrs(o: rec {
     preBuild = ''
-      substituteInPlace smartcard/CardMonitoring.py --replace "traceback.print_exc()" "print('Not bailing on you!'); continue"
+      # Getting rid of commit: https://github.com/LudovicRousseau/pyscard/commit/37b6997d05ee9feae41ad53c0189474fd23fb3be.patch
+      substituteInPlace smartcard/CardMonitoring.py --replace "self.stopEvent.set()" "pass"
     '';
   });
   pyPkgs = getPythonVersion pkgs;

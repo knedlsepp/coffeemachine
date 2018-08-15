@@ -33,28 +33,22 @@ class DjangoInsertionObserver(CardObserver):
     def update(self, observable, actions):
         (addedcards, removedcards) = actions
         for card in addedcards:
-            try:
-                card.connection = card.createConnection()
-                card.connection.connect()
-                res, s1, s2 = card.connection.transmit(cmdMap["getuid"])
-                print("Tag registered: {}".format(toHexString(res)))
-                if res:
-                    card.connection.transmit(cmdMap["blinkGreenWithSound"])
-                    tag, created = Tag.objects.get_or_create(tag_value=toHexString(res))
-                    purchase = Purchase(tag=tag, date=now(), price=Price.objects.latest('id'))
-                    purchase.save()
-                    # Print out balance, TODO: to screen
-                    if tag.owner:
-                        print("{}: {}".format(tag.owner, get_user_totals().loc[tag.owner.id]["balance"]))
-                    else:
-                        print("Please associate tag with user in web interface. Unknown balance.")
+            card.connection = card.createConnection()
+            card.connection.connect()
+            res, s1, s2 = card.connection.transmit(cmdMap["getuid"])
+            print("Tag registered: {}".format(toHexString(res)))
+            if res:
+                card.connection.transmit(cmdMap["blinkGreenWithSound"])
+                tag, created = Tag.objects.get_or_create(tag_value=toHexString(res))
+                purchase = Purchase(tag=tag, date=now(), price=Price.objects.latest('id'))
+                purchase.save()
+                # Print out balance, TODO: to screen
+                if tag.owner:
+                    print("{}: {}".format(tag.owner, get_user_totals().loc[tag.owner.id]["balance"]))
                 else:
-                    print("Failure reading the thing")
-            except CardRequestTimeoutException as e:
-                # TODO: Still does not catch all exceptions. Try moving cards away quickly and those errors still occur (and cause an infinite loop in our program)
-                # We should probably not use the observer based approach.
-                print("Error reading the thing")
-                continue
+                    print("Please associate tag with user in web interface. Unknown balance.")
+            else:
+                print("Failure reading the thing")
         for card in removedcards:
             pass
 

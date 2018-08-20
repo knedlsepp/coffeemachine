@@ -15,6 +15,15 @@ let
       substituteInPlace smartcard/CardMonitoring.py --replace "self.stopEvent.set()" "pass"
     '';
   });
+  smbus2 = pyPkgs.buildPythonPackage rec {
+    name = "smbus2-${version}";
+    version = "0.2.1";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/s/smbus2/${name}.tar.gz";
+      sha256 = "0axzrb1b20vjsp02ppz0x28pwn8gvx3rzrsvkfbbww26wzzl7ndq";
+    };
+  };
+
   pyPkgs = getPythonVersion pkgs;
 in with pkgs; pyPkgs.buildPythonPackage rec {
   name = "coffeemachine";
@@ -23,6 +32,7 @@ in with pkgs; pyPkgs.buildPythonPackage rec {
     django
     pandas
     pyscard
+    smbus2
   ];
   doCheck = false; # TODO!
   checkInputs = with pyPkgs; [

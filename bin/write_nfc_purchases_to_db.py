@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import django
 from django.conf import settings
 import os
@@ -15,6 +17,7 @@ from smartcard.ATR import ATR
 from coffeelist.models import Tag, Purchase, Price, User
 from coffeelist.views import get_user_totals
 from django.utils.timezone import now
+import coffeelist.lcddriver
 
 cmdMap = {
     "muteCardDetection":[0xFF, 0x00, 0x52, 0x00, 0x00],
@@ -29,6 +32,9 @@ cmdMap = {
     "waitUntilRespond":[0xFF, 0x00, 0x41, 0xFF, 0x00],
 }
 
+lcd = coffeelist.lcddriver.lcd()
+
+
 class DjangoInsertionObserver(CardObserver):
     def update(self, observable, actions):
         (addedcards, removedcards) = actions
@@ -42,11 +48,17 @@ class DjangoInsertionObserver(CardObserver):
                 tag, created = Tag.objects.get_or_create(tag_value=toHexString(res))
                 purchase = Purchase(tag=tag, date=now(), price=Price.objects.latest('id'))
                 purchase.save()
-                # Print out balance, TODO: to screen
+                user_totals = get_user_totals()
                 if tag.owner:
-                    print("{}: {}".format(tag.owner, get_user_totals().loc[tag.owner.id]["balance"]))
+                    rank = int(user_totals['total_coffees'].rank(ascending=False)[tag.owner.id])
+                    user = user_totals.loc[tag.owner.id]
+                    balance = user['balance']
+                    full_name = user['full_name']
+                    lcd.lcd_display_string(line=1, string="{}. {}".format(rank, full_name))
+                    lcd.lcd_display_string(line=2, string="{}€ ({})".format(balance, user["total_coffees"]))
                 else:
-                    print("Please associate tag with user in web interface. Unknown balance.")
+                    lcd.lcd_display_string(line=1, string="  Unknown tag.  ")
+                    lcd.lcd_display_string(line=2, string="Please register.")
             else:
                 print("Failure reading the thing")
         for card in removedcards:

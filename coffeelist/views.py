@@ -16,12 +16,18 @@ def get_user_totals():
         for user in User.objects.annotate(
             deposits=Coalesce(Sum('deposit__euros'), Value(0.)))
     }
+    user_total_coffees = {
+        user.pk: user.total_coffees
+        for user in User.objects.annotate(
+            total_coffees=Coalesce(Count('tag__purchase'), Value(0.)))
+    }
     response = [{
         'pk': user.pk,
         'username': user.username,
         'full_name': '{} {}'.format(user.first_name, user.last_name),
         'total_deposits': user_deposit[user.pk],
         'total_purchases': user.total_purchases,
+        'total_coffees': user_total_coffees[user.pk],
         'balance': user_deposit[user.pk] - user.total_purchases,
     } for user in User.objects.annotate(
         total_purchases=Coalesce(

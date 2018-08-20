@@ -23,6 +23,9 @@ let
       sha256 = "0axzrb1b20vjsp02ppz0x28pwn8gvx3rzrsvkfbbww26wzzl7ndq";
     };
   };
+  pandas = pyPkgs.pandas.overrideAttrs(o: rec {
+    doCheck = false;
+  });
 
   pyPkgs = getPythonVersion pkgs;
 in with pkgs; pyPkgs.buildPythonPackage rec {

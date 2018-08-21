@@ -25,6 +25,7 @@ let
   };
   pandas = pyPkgs.pandas.overrideAttrs(o: rec {
     doCheck = false;
+	doInstallCheck = false;
   });
 
   pyPkgs = getPythonVersion pkgs;

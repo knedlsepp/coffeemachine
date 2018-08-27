@@ -49,13 +49,14 @@ class DjangoInsertionObserver(CardObserver):
                 purchase = Purchase(tag=tag, date=now(), price=Price.objects.latest('id'))
                 purchase.save()
                 user_totals = get_user_totals()
+                lcd.lcd_clear()
                 if tag.owner:
                     rank = int(user_totals['total_coffees'].rank(ascending=False)[tag.owner.id])
                     user = user_totals.loc[tag.owner.id]
                     balance = user['balance']
                     full_name = user['full_name']
                     lcd.lcd_display_string(line=1, string="{}. {}".format(rank, full_name))
-                    lcd.lcd_display_string(line=2, string="{}€ ({})".format(balance, user["total_coffees"]))
+                    lcd.lcd_display_string(line=2, string="{}EUR {}".format(balance, user["total_coffees"]))
                 else:
                     lcd.lcd_display_string(line=1, string="  Unknown tag.  ")
                     lcd.lcd_display_string(line=2, string="Please register.")

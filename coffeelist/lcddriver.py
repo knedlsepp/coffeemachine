@@ -1,4 +1,6 @@
-﻿import smbus2 as smbus
+﻿#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import smbus2 as smbus
 from time import *
 
 class i2c_device:
@@ -134,7 +136,9 @@ class lcd:
       if line == 4:
          self.lcd_write(0xD4)
 
+      special_chars = {'ä': '\341', 'ü': '\365', 'ö': '\357', 'ß': '\342'}
       for char in string:
+         char = special_chars.get(char, char)
          self.lcd_write(ord(char), Rs)
 
    # clear lcd and set to home

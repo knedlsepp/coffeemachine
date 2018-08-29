@@ -46,7 +46,13 @@ class DjangoInsertionObserver(CardObserver):
             if res:
                 card.connection.transmit(cmdMap["blinkGreenWithSound"])
                 tag, created = Tag.objects.get_or_create(tag_value=toHexString(res))
-                purchase = Purchase(tag=tag, date=now(), price=Price.objects.latest('id'))
+                try:
+                    purchase = Purchase(tag=tag, date=now(), price=Price.objects.latest('id'))
+                except Price.DoesNotExist:
+                    lcd.lcd_display_string(line=1, string="  No Price set  ")
+                    lcd.lcd_display_string(line=2, string=" Use the Web UI ")
+                    continue
+
                 purchase.save()
                 user_totals = get_user_totals()
                 lcd.lcd_clear()

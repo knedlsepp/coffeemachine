@@ -85,8 +85,8 @@ def init():
 
 def main():
     print("{} Starting NFC Monitor. Waiting for input.".format(now()))
-	lcd.lcd_display_string(line=1, string="Waiting to serve")
-	lcd.lcd_display_string(line=2, string="  (some coffee) ")
+    lcd.lcd_display_string(line=1, string="Waiting to serve")
+    lcd.lcd_display_string(line=2, string="  (some coffee) ")
 
     init()
     cardmonitor = CardMonitor()

@@ -16,16 +16,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='deposit',
             name='date',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Date of transaction'),
+            field=models.DateTimeField(
+                default=django.utils.timezone.now,
+                verbose_name='Date of transaction'),
         ),
         migrations.AddField(
             model_name='price',
             name='date',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Date when the price changed'),
+            field=models.DateTimeField(
+                default=django.utils.timezone.now,
+                verbose_name='Date when the price changed'),
         ),
         migrations.AddField(
             model_name='purchase',
             name='date',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='date of purchase'),
+            field=models.DateTimeField(
+                default=django.utils.timezone.now,
+                verbose_name='date of purchase'),
         ),
     ]

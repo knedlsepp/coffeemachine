@@ -16,6 +16,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='purchase',
             name='price',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='coffeelist.Price'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='coffeelist.Price'),
         ),
     ]

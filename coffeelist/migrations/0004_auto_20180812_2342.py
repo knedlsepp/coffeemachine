@@ -17,22 +17,31 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='purchase',
             name='price',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='coffeelist.Price'),
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='coffeelist.Price'),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='deposit',
             name='date',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Date of transaction'),
+            field=models.DateTimeField(
+                default=django.utils.timezone.now,
+                verbose_name='Date of transaction'),
         ),
         migrations.AlterField(
             model_name='price',
             name='date',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Date when the price changed'),
+            field=models.DateTimeField(
+                default=django.utils.timezone.now,
+                verbose_name='Date when the price changed'),
         ),
         migrations.AlterField(
             model_name='purchase',
             name='date',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='date of purchase'),
+            field=models.DateTimeField(
+                default=django.utils.timezone.now,
+                verbose_name='date of purchase'),
         ),
     ]

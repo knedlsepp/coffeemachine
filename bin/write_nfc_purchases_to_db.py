@@ -67,7 +67,7 @@ class DjangoInsertionObserver(CardObserver):
                     lcd.lcd_display_string(line=1, string="Please register.")
                     lcd.lcd_display_string(line=2, string=toHexString(res))
             else:
-                print("Failure reading the thing")
+                print("Failure reading the tag.")
         for card in removedcards:
             pass
 

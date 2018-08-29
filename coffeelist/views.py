@@ -40,7 +40,6 @@ def get_user_totals():
 
 def index(request):
     df = get_user_totals()
-    print(df)
     response = df[[
         'full_name',
         'total_deposits',

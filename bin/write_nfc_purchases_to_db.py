@@ -64,8 +64,8 @@ class DjangoInsertionObserver(CardObserver):
                     lcd.lcd_display_string(line=1, string="{}. {}".format(rank, full_name))
                     lcd.lcd_display_string(line=2, string="{}EUR {}".format(balance, user["total_coffees"]))
                 else:
-                    lcd.lcd_display_string(line=1, string="  Unknown tag.  ")
-                    lcd.lcd_display_string(line=2, string="Please register.")
+                    lcd.lcd_display_string(line=1, string="Please register.")
+                    lcd.lcd_display_string(line=2, string=toHexString(res))
             else:
                 print("Failure reading the thing")
         for card in removedcards:

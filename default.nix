@@ -33,7 +33,7 @@ in with pkgs; pyPkgs.buildPythonPackage rec {
   name = "coffeemachine";
   inherit src;
   propagatedBuildInputs = with pyPkgs; [
-    django
+    django_2_0
     pandas
     pyscard
     smbus2

@@ -5,7 +5,7 @@ from django.utils.timezone import now
 
 class Tag(models.Model):
     tag_value = models.CharField(max_length=200, unique=True)
-    owner = models.ForeignKey(User, null=True, blank=True)
+    owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return '({}, Owner:{})'.format(self.tag_value, self.owner)
@@ -20,10 +20,10 @@ class Price(models.Model):
 
 
 class Purchase(models.Model):
-    tag = models.ForeignKey(Tag, null=False)
+    tag = models.ForeignKey(Tag, null=False, on_delete=models.CASCADE)
     date = models.DateTimeField(
         'date of purchase', default=now)  # Probably incorrect without a RTC
-    price = models.ForeignKey(Price, null=True)
+    price = models.ForeignKey(Price, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return '(Date: {:%x %X}, Tag:{}, Price: {})'.format(
@@ -31,7 +31,7 @@ class Purchase(models.Model):
 
 
 class Deposit(models.Model):
-    person = models.ForeignKey(User)
+    person = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField('Date of transaction', default=now)
     euros = models.DecimalField(max_digits=6, decimal_places=2)
 

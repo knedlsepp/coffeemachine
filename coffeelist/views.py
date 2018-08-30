@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 import json
 from django.http import JsonResponse
 import django_tables2 as tables
+from django_tables2 import RequestConfig
 import pandas as pd
 
 
@@ -59,4 +60,5 @@ def index(request):
         'balance',
     ]].to_html()
     table = CoffelistTable(df.to_dict(orient='records'))
+    RequestConfig(request).configure(table)
     return render(request, 'coffeelist/coffeelist.html', {'table': table})

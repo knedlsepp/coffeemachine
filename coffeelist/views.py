@@ -6,7 +6,7 @@ from django.db.models.functions import Coalesce
 from django.contrib.auth.models import User
 import json
 from django.http import JsonResponse
-
+import django_tables2 as tables
 import pandas as pd
 
 
@@ -38,12 +38,25 @@ def get_user_totals():
     return df
 
 
+class CoffelistTable(tables.Table):
+    full_name = tables.Column()
+    total_coffees = tables.Column()
+    total_purchases = tables.Column()
+    total_deposits = tables.Column()
+    balance = tables.Column()
+
+    class Meta:
+        template_name = 'django_tables2/bootstrap.html'
+
+
 def index(request):
     df = get_user_totals()
     response = df[[
         'full_name',
-        'total_deposits',
+        'total_coffees',
         'total_purchases',
+        'total_deposits',
         'balance',
     ]].to_html()
-    return HttpResponse(response)
+    table = CoffelistTable(df.to_dict(orient='records'))
+    return render(request, 'coffeelist/coffeelist.html', {'table': table})

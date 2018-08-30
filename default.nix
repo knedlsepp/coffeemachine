@@ -23,6 +23,18 @@ let
       sha256 = "0axzrb1b20vjsp02ppz0x28pwn8gvx3rzrsvkfbbww26wzzl7ndq";
     };
   };
+  django-tables2 = pyPkgs.buildPythonPackage rec {
+    name = "django-tables2-${version}";
+    version = "1.21.2";
+    src = pkgs.fetchurl {
+      url = "mirror://pypi/d/django-tables2/${name}.tar.gz";
+      sha256 = "0ymzddkm3kkirdvabpjk40x9v00cir3wskbqya47wbvs3ch7kjf5";
+    };
+    propagatedBuildInputs = with pyPkgs; [
+      django_2_0
+    ];
+    doCheck = false;
+  };
   pandas = pyPkgs.pandas.overrideAttrs(o: rec {
     doCheck = false;
 	doInstallCheck = false;
@@ -34,6 +46,7 @@ in with pkgs; pyPkgs.buildPythonPackage rec {
   inherit src;
   propagatedBuildInputs = with pyPkgs; [
     django_2_0
+    django-tables2
     pandas
     pyscard
     smbus2

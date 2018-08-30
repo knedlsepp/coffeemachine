@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_tables2',
     'coffeelist.apps.CoffeelistConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'coffeemachine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ './coffelist/templates/' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
